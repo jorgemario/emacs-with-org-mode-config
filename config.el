@@ -224,6 +224,11 @@
 (bind-key "C-x 2" 'vsplit-other-window)
 (bind-key "C-x 3" 'hsplit-other-window)
 
+(use-package smex
+  :if (not (featurep 'helm-mode))
+  :ensure t
+  :bind ("M-x" . smex))
+
 (use-package undo-tree
   :defer t
   :ensure t
