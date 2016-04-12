@@ -60,3 +60,12 @@ Icon
 
 # Thumbnails
 ._*
+
+# cider
+cider-history
+
+# ido
+ido.last
+
+# config.el is generated automatically
+config.el
