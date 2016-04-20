@@ -69,3 +69,7 @@ ido.last
 
 # config.el is generated automatically
 config.el
+
+# projectile cache
+projectile.cache
+projectile-bookmarks.eld

@@ -171,14 +171,27 @@
     :if (window-system)
     :ensure t
     :init
-    (progn
-      (load-theme 'cyberpunk t)
-      (set-face-attribute `mode-line nil
-                          :box nil)
-      (set-face-attribute `mode-line-inactive nil
-                          :box nil)))
+      ;; (progn
+      ;;   (load-theme 'cyberpunk t)
+      ;;   (set-face-attribute `mode-line nil
+      ;;                       :box nil)
+      ;;   (set-face-attribute `mode-line-inactive nil
+    ;;                       :box nil))
+    )
+#+END_SRC
+*** Spacemacs
+#+BEGIN_SRC emacs-lisp
+  (use-package spacemacs-theme
+    :ensure t
+    :init
+    (load-theme 'spacemacs-dark t))
 #+END_SRC
 ** Font
+*** Inconsolata
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'default-frame-alist
+               '(font . "Inconsolata-14"))
+#+END_SRC
 ** Global functions
 #+BEGIN_SRC emacs-lisp
     (defun sudo-edit (&optional arg)
@@ -194,11 +207,6 @@
         (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
 
     (global-set-key (kbd "C-x C-r") 'sudo-edit)
-#+END_SRC
-*** Inconsolata
-#+BEGIN_SRC emacs-lisp
-  (add-to-list 'default-frame-alist
-               '(font . "Inconsolata-14"))
 #+END_SRC
 ** Navigation
 *** Recentf
@@ -283,7 +291,7 @@ From: [[https://github.com/sachac/.emacs.d/blob/83d21e473368adb1f63e582a6595450f
       (setq undo-tree-visualizer-timestamps t)
       (setq undo-tree-visualizer-diff t)))
 #+END_SRC
-** COMMENT Helm
+** Helm
 #+BEGIN_SRC emacs-lisp
   (use-package helm
     :ensure t
@@ -402,6 +410,16 @@ From: [[https://github.com/sachac/.emacs.d/blob/83d21e473368adb1f63e582a6595450f
        (define-key clojure-mode-map (kbd "C-c u") 'cider-user-ns)
        (define-key cider-mode-map (kbd "C-c u") 'cider-user-ns)))
     )
+#+END_SRC
+** Web mode
+#+BEGIN_SRC emacs-lisp
+  (use-package web-mode
+    :ensure t
+    :config
+    (setq web-mode-enable-auto-pairing t)
+    (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.json\\'" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.js[x]\\'" . web-mode)))
 #+END_SRC
 * Code Management
 ** Magit
