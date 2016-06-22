@@ -203,8 +203,18 @@
 ** Font
 *** Inconsolata
 #+BEGIN_SRC emacs-lisp
+q  ;; (add-to-list 'default-frame-alist
+  ;;              '(font . "Inconsolata-14"))
+#+END_SRC
+*** Mononoki
+#+BEGIN_SRC emacs-lisp
+  ;; (add-to-list 'default-frame-alist
+  ;;              '(font . "mononoki-14"))
+#+END_SRC
+*** Hack
+#+BEGIN_SRC emacs-lisp
   (add-to-list 'default-frame-alist
-               '(font . "Inconsolata-14"))
+               '(font . "Hack-14"))
 #+END_SRC
 ** Global functions
 #+BEGIN_SRC emacs-lisp
@@ -283,6 +293,12 @@
 
   (bind-key "C-x 2" 'vsplit-other-window)
   (bind-key "C-x 3" 'hsplit-other-window)
+
+  ;; Enabling winner-mode to restore windows
+  (winner-mode 1)
+
+  ;; Enabling windmove 【Shift+→】/ 【Shift+←】/ 【Shift+↓】 / 【Shift+↑】
+  (windmove-default-keybindings)
 #+END_SRC
 ** Smex
 #+BEGIN_SRC emacs-lisp
@@ -341,7 +357,23 @@ From: [[https://github.com/sachac/.emacs.d/blob/83d21e473368adb1f63e582a6595450f
     :config
     (progn
       (super-save-mode +1)
-      (setq auto-save-default nil)))
+      (setq auto-save-default nil)
+      ))
+#+END_SRC
+** Org
+#+BEGIN_SRC emacs-lisp
+  (setq org-replace-disputed-keys t)
+#+END_SRC
+** Crux
+#+BEGIN_SRC emacs-lisp
+  (use-package crux
+    :ensure t
+    :bind (("C-c u" . crux-view-url)
+           ("C-c d" . crux-delete-file-and-buffer)
+           ("C-c r" . crux-rename-buffer-and-file)
+           ([remap move-beginning-of-line] . crux-move-beginning-of-line)
+           ([remap kill-whole-line] . crux-kill-whole-line)
+           ("C-c I" . crux-find-user-init-file)))
 #+END_SRC
 * Code Edit
 ** Paredit
@@ -466,6 +498,35 @@ From: [[https://github.com/sachac/.emacs.d/blob/83d21e473368adb1f63e582a6595450f
             (let ((web-mode-enable-part-face nil))
               ad-do-it)
           ad-do-it)))
+#+END_SRC
+** Scala
+*** scala-mode
+#+BEGIN_SRC emacs-lisp
+  (use-package scala-mode
+    :ensure t
+    :interpreter
+    ("scala" . scala-mode))
+#+END_SRC
+*** sbt-mode
+#+BEGIN_SRC emacs-lisp
+  (use-package sbt-mode
+    :ensure t
+    :commands sbt-start sbt-command
+    :config
+    ;; WORKAROUND: https://github.com/ensime/emacs-sbt-mode/issues/31
+    ;; allows using SPACE when in the minibuffer
+    (substitute-key-definition
+     'minibuffer-complete-word
+     'self-insert-command
+     minibuffer-local-completion-map))
+#+END_SRC
+*** Ensime
+#+BEGIN_SRC emacs-lisp
+  (use-package ensime
+    :ensure t
+    :commands ensime ensime-mode
+    :config
+    (add-hook 'scala-mode-hook 'ensime-mode))
 #+END_SRC
 * Code Management
 ** Magit
