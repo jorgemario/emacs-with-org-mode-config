@@ -76,6 +76,9 @@
 
   ;; Go straight to scratch buffer on startup
   (setq inhibit-startup-message t)
+
+  ;; Electric pair mode always on
+  (electric-pair-mode 1)
 #+END_SRC
 ** OS
 #+BEGIN_SRC emacs-lisp
@@ -203,7 +206,7 @@
 ** Font
 *** Inconsolata
 #+BEGIN_SRC emacs-lisp
-q  ;; (add-to-list 'default-frame-alist
+  ;; (add-to-list 'default-frame-alist
   ;;              '(font . "Inconsolata-14"))
 #+END_SRC
 *** Mononoki
@@ -374,6 +377,25 @@ From: [[https://github.com/sachac/.emacs.d/blob/83d21e473368adb1f63e582a6595450f
            ([remap move-beginning-of-line] . crux-move-beginning-of-line)
            ([remap kill-whole-line] . crux-kill-whole-line)
            ("C-c I" . crux-find-user-init-file)))
+#+END_SRC
+** Undo Tree
+#+BEGIN_SRC emacs-lisp
+  (use-package undo-tree
+    :ensure t
+    :diminish undo-tree-mode
+    :config (global-undo-tree-mode)
+    :bind ("s-/" . undo-tree-visualize))
+#+END_SRC
+** Goto Last Change
+#+BEGIN_SRC emacs-lisp
+  (use-package goto-chg
+    :ensure t
+    :commands goto-last-change
+    ;; complementary to
+    ;; C-x r m / C-x r l
+    ;; and C-<space> C-<space> / C-u C-<space>
+    :bind (("C-." . goto-last-change)
+           ("C-," . goto-last-change-reverse)))
 #+END_SRC
 * Code Edit
 ** Paredit
