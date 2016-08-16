@@ -236,6 +236,14 @@
     (global-set-key (kbd "C-x C-r") 'sudo-edit)
 #+END_SRC
 ** Navigation
+*** Which-key
+#+BEGIN_SRC emacs-lisp
+  (use-package which-key
+    :ensure t
+    :init
+    (require 'which-key)
+    (which-key-mode))
+#+END_SRC
 *** Recentf
 #+BEGIN_SRC emacs-lisp
   (use-package recentf
@@ -398,6 +406,21 @@ From: [[https://github.com/sachac/.emacs.d/blob/83d21e473368adb1f63e582a6595450f
            ("C-," . goto-last-change-reverse)))
 #+END_SRC
 * Code Edit
+** Company mode
+#+BEGIN_SRC emacs-lisp
+  (use-package company
+    :ensure t
+    :config
+    (global-company-mode)
+  
+    ; use M-TAB, a.k.a. C-M-i, as manual trigger
+    (global-set-key (kbd "s-<tab>") #'company-complete))
+#+END_SRC
+** Rainbow delimiters
+#+BEGIN_SRC emacs-lisp
+  (use-package rainbow-delimiters
+   :ensure t)
+#+END_SRC
 ** Paredit
 #+BEGIN_SRC emacs-lisp
   (use-package paredit
@@ -416,7 +439,9 @@ From: [[https://github.com/sachac/.emacs.d/blob/83d21e473368adb1f63e582a6595450f
     ;; http://www.emacswiki.org/emacs/ElDoc
     (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
     (add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode)
-    (add-hook 'ielm-mode-hook 'turn-on-eldoc-mode))
+    (add-hook 'ielm-mode-hook 'turn-on-eldoc-mode)
+    (global-set-key (kbd "M-[") #'paredit-wrap-square)
+    (global-set-key (kbd "M-{") #'paredit-wrap-curly))
 #+END_SRC
 ** Clojure mode
 #+BEGIN_SRC emacs-lisp
@@ -424,11 +449,13 @@ From: [[https://github.com/sachac/.emacs.d/blob/83d21e473368adb1f63e582a6595450f
     :ensure t
     :config
     ;; Enable paredit for Clojure
-    (add-hook 'clojure-mode-hook 'enable-paredit-mode)
+    (add-hook 'clojure-mode-hook #'enable-paredit-mode)
+
+    (add-hook 'clojure-mode-hook #'rainbow-delimiters-mode)
 
     ;; This is useful for working with camel-case tokens, like names of
     ;; Java classes (e.g. JavaClassName)
-    (add-hook 'clojure-mode-hook 'subword-mode)
+    (add-hook 'clojure-mode-hook #'subword-mode)
 
     ;; syntax hilighting for midje
     (add-hook 'clojure-mode-hook
@@ -446,7 +473,7 @@ From: [[https://github.com/sachac/.emacs.d/blob/83d21e473368adb1f63e582a6595450f
     ;; Use clojure mode for other extensions
     (add-to-list 'auto-mode-alist '("\\.edn$" . clojure-mode))
     (add-to-list 'auto-mode-alist '("\\.boot$" . clojure-mode))
-    (add-to-list 'auto-mode-alist '("\\.cljs.*$" . clojure-mode))
+    (add-to-list 'auto-mode-alist '("\\.cljs.*$" . clojurescript-mode))
     (add-to-list 'auto-mode-alist '("lein-env" . enh-ruby-mode)))
 
 
@@ -465,7 +492,7 @@ From: [[https://github.com/sachac/.emacs.d/blob/83d21e473368adb1f63e582a6595450f
     :ensure t
     :config
     ;; provides minibuffer documentation for the code you're typing into the repl
-    (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
+    (add-hook 'cider-repl-mode-hook #'eldoc-mode)
 
     ;; go right to the REPL buffer when it's finished connecting
     (setq cider-repl-pop-to-buffer-on-connect t)
@@ -484,7 +511,7 @@ From: [[https://github.com/sachac/.emacs.d/blob/83d21e473368adb1f63e582a6595450f
     (setq cider-repl-wrap-history t)
 
     ;; enable paredit in your REPL
-    (add-hook 'cider-repl-mode-hook 'paredit-mode)
+    (add-hook 'cider-repl-mode-hook #'paredit-mode)
 
     (eval-after-load 'cider
     '(progn
@@ -493,6 +520,18 @@ From: [[https://github.com/sachac/.emacs.d/blob/83d21e473368adb1f63e582a6595450f
        (define-key clojure-mode-map (kbd "C-c u") 'cider-user-ns)
        (define-key cider-mode-map (kbd "C-c u") 'cider-user-ns)))
     )
+#+END_SRC
+** inf-clojure (cider 
+#+BEGIN_SRC emacs-lisp
+  (use-package inf-clojure
+    :ensure t
+    ;; :init
+    ;; (add-hook 'clojure-mode-hook #'inf-clojure-minor-mode)
+    )
+
+  (defun figwheel-repl ()
+    (interactive)
+    (run-clojure "lein figwheel"))
 #+END_SRC
 ** Web mode
 #+BEGIN_SRC emacs-lisp
@@ -586,7 +625,7 @@ From: [[https://github.com/sachac/.emacs.d/blob/83d21e473368adb1f63e582a6595450f
     :ensure t
     :bind ("C-x g" . magit-status)
     :config
-    (define-key magit-status-mode-map (kbd "q") 'magit-quit-session))
+    (define-key magit-status-mode-map (kbd "q") 'magit-mode-bury-buffer))
 #+END_SRC
 ** Projectile
 #+BEGIN_SRC emacs-lisp
@@ -607,5 +646,6 @@ From: [[https://github.com/sachac/.emacs.d/blob/83d21e473368adb1f63e582a6595450f
         :commands ag
         :ensure t))
     :bind (("s-f" . projectile-find-file)
-           ("s-F" . projectile-grep)))
+           ("s-F" . projectile-grep)
+           ("s-E" . projectile-recentf)))
 #+END_SRC
