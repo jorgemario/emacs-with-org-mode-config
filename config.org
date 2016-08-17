@@ -513,7 +513,7 @@ From: [[https://github.com/sachac/.emacs.d/blob/83d21e473368adb1f63e582a6595450f
     ;; enable paredit in your REPL
     (add-hook 'cider-repl-mode-hook #'paredit-mode)
 
-q    ;; Instruct CIDER to use Figwheel
+    ;; Instruct CIDER to use Figwheel
     ;; https://cider.readthedocs.io/en/latest/up_and_running/#clojurescript-usage
     (setq cider-cljs-lein-repl "(do (use 'figwheel-sidecar.repl-api) (start-figwheel!) (cljs-repl))")
 
