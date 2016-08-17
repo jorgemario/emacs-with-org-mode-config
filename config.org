@@ -615,8 +615,9 @@ From: [[https://github.com/sachac/.emacs.d/blob/83d21e473368adb1f63e582a6595450f
   (use-package magit
     :ensure t
     :bind ("C-x g" . magit-status)
-    :config
-    (define-key magit-status-mode-map (kbd "q") 'magit-mode-bury-buffer))
+    ;; :config
+    ;; (define-key magit-status-mode-map (kbd "q") 'magit-mode-bury-buffer)
+    )
 #+END_SRC
 ** Projectile
 #+BEGIN_SRC emacs-lisp
