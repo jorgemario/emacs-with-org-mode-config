@@ -513,25 +513,16 @@ From: [[https://github.com/sachac/.emacs.d/blob/83d21e473368adb1f63e582a6595450f
     ;; enable paredit in your REPL
     (add-hook 'cider-repl-mode-hook #'paredit-mode)
 
+q    ;; Instruct CIDER to use Figwheel
+    ;; https://cider.readthedocs.io/en/latest/up_and_running/#clojurescript-usage
+    (setq cider-cljs-lein-repl "(do (use 'figwheel-sidecar.repl-api) (start-figwheel!) (cljs-repl))")
+
     (eval-after-load 'cider
     '(progn
        ;;(define-key clojure-mode-map (kbd "C-c C-v") 'cider-start-http-server)
        ;;(define-key clojure-mode-map (kbd "C-M-r") 'cider-refresh)
        (define-key clojure-mode-map (kbd "C-c u") 'cider-user-ns)
-       (define-key cider-mode-map (kbd "C-c u") 'cider-user-ns)))
-    )
-#+END_SRC
-** inf-clojure (cider 
-#+BEGIN_SRC emacs-lisp
-  (use-package inf-clojure
-    :ensure t
-    ;; :init
-    ;; (add-hook 'clojure-mode-hook #'inf-clojure-minor-mode)
-    )
-
-  (defun figwheel-repl ()
-    (interactive)
-    (run-clojure "lein figwheel"))
+       (define-key cider-mode-map (kbd "C-c u") 'cider-user-ns))))
 #+END_SRC
 ** Web mode
 #+BEGIN_SRC emacs-lisp
