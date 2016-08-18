@@ -637,7 +637,7 @@ From: [[https://github.com/sachac/.emacs.d/blob/83d21e473368adb1f63e582a6595450f
       (use-package ag
         :commands ag
         :ensure t))
-    :bind (("s-f" . projectile-find-file)
+    :bind (("M-S-o" . projectile-find-file)
            ("s-F" . projectile-grep)
-           ("s-E" . projectile-recentf)))
+           ("M-o" . projectile-recentf)))
 #+END_SRC
