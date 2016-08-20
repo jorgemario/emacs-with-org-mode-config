@@ -25,6 +25,12 @@ tramp
 # elpa packages
 /elpa/
 
+# var
+/var/
+
+# toutorial files
+/tutorial/
+
 # smex
 smex-items
 

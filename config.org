@@ -219,22 +219,6 @@
   (add-to-list 'default-frame-alist
                '(font . "Hack-14"))
 #+END_SRC
-** Global functions
-#+BEGIN_SRC emacs-lisp
-  ;; (defun sudo-edit (&optional arg)
-  ;;   "Edit currently visited file as root.
-
-  ;; With a prefix ARG prompt for a file to visit.
-  ;; Will also prompt for a file to visit if current
-  ;; buffer is not visiting a file."
-  ;;   (interactive "P")
-  ;;   (if (or arg (not buffer-file-name))
-  ;;       (find-file (concat "/sudo:root@localhost:"
-  ;;                          (ido-read-file-name "Find file(as root): ")))
-  ;;     (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
-
-  ;; (global-set-key (kbd "C-x C-r") 'sudo-edit)
-#+END_SRC
 ** Navigation
 *** Which-key
 #+BEGIN_SRC emacs-lisp
@@ -251,34 +235,12 @@
     :init
     (progn
       (recentf-mode t)
-      (setq recentf-max-saved-items 200)
-
-      ;; (defun ido-recentf-open ()
-      ;;   "Use `ido-completing-read' to \\[find-file] a recent file"
-      ;;   (interactive)
-      ;;   (if (find-file (ido-completing-read "Find recent file: " recentf-list))
-      ;;       (message "Opening file...")
-      ;;     (message "Aborting")))
-
-      ;; (bind-key "C-x C-r" 'ido-recentf-open)
-      ))
+      (setq recentf-max-saved-items 200)))
 #+END_SRC
 *** List buffers
 #+BEGIN_SRC emacs-lisp
   ;; make ibuffer the default buffer lister.
   (defalias 'list-buffers 'ibuffer)
-#+END_SRC
-*** Ido
-#+BEGIN_SRC emacs-lisp
-  ;; (use-package ido
-  ;;   :init
-  ;;   (setq ido-enable-flex-matching t)
-  ;;   (setq ido-everywhere t)
-  ;;   (ido-mode t)
-  ;;   (use-package ido-vertical-mode
-  ;;     :ensure t
-  ;;     :init (ido-vertical-mode 1)
-  ;;     (setq ido-vertical-define-keys 'C-n-and-C-p-only)))
 #+END_SRC
 ** Window
 #+BEGIN_SRC emacs-lisp
@@ -311,13 +273,6 @@
 
   ;; Enabling windmove 【Shift+→】/ 【Shift+←】/ 【Shift+↓】 / 【Shift+↑】
   (windmove-default-keybindings)
-#+END_SRC
-** Smex
-#+BEGIN_SRC emacs-lisp
-  ;; (use-package smex
-  ;;   :if (not (featurep 'helm-mode))
-  ;;   :ensure t
-  ;;   :bind ("M-x" . smex))
 #+END_SRC
 ** Undo tree
 This lets you use C-x u (undo-tree-visualize) to visually walk through the changes you’ve made.
@@ -613,16 +568,17 @@ From: [[https://github.com/sachac/.emacs.d/blob/83d21e473368adb1f63e582a6595450f
 #+END_SRC
 ** Inf-clojure
 #+BEGIN_SRC emacs-lisp
-  (use-package inf-clojure
-    :ensure t
-    :config
+    (use-package inf-clojure
+      :ensure t
+      :config
 
-    ;; Enable inf-clojure for cljs
-    ;; (add-hook 'clojurescript-mode-hook #'inf-clojure-minor-mode))
+      ;; Enable inf-clojure for cljs
+      ;; (add-hook 'clojurescript-mode-hook #'inf-clojure-minor-mode)
+      )
 
-  (defun figwheel-repl ()
-    (interactive)
-    (run-clojure "lein figwheel"))
+    (defun figwheel-repl ()
+      (interactive)
+      (run-clojure "lein figwheel"))
 #+END_SRC
 * Code Management
 ** Magit
