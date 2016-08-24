@@ -4,13 +4,19 @@
   (setq user-full-name "Jorge M Gomez Cardona"
         user-mail-address "jorgemario@gmail.com")
 #+END_SRC
-** Defaults
+** Defaul
 #+BEGIN_SRC emacs-lisp
   ;; These functions are useful. Activate them.
   (put 'downcase-region 'disabled nil)
   (put 'upcase-region 'disabled nil)
   (put 'narrow-to-region 'disabled nil)
   (put 'dired-find-alternate-file 'disabled nil)
+
+  ;; Auto refresh
+  (global-auto-revert-mode 1)
+  ;; Also auto refresh dired, but be quiet about it
+  (setq global-auto-revert-non-file-buffers t
+        auto-revert-verbose nil)
 
   ;; Answering just 'y' or 'n' will do
   (defalias 'yes-or-no-p 'y-or-n-p)
@@ -82,6 +88,7 @@
 #+END_SRC
 ** OS
 #+BEGIN_SRC emacs-lisp
+
     ;; Don't show native OS scroll bars for buffers because they're redundant
     (when (fboundp 'scroll-bar-mode)
       (scroll-bar-mode -1))
@@ -119,7 +126,7 @@
         ;; change meta key
         (setq mac-option-modifier 'super)
         (setq mac-command-modifier 'meta)
-      
+  
         ;; delete files by moving them to the trash
         (setq delete-by-moving-to-trash t)
         (setq trash-directory "~/.Trash")
@@ -132,7 +139,7 @@
 
         ;; Use Command-` to switch between Emacs windows (not frames)
         (bind-key "s-`" 'other-window)
-  
+
         ;; Use Command-Shift-` to switch Emacs frames in reverse
         (bind-key "s-~" (lambda() () (interactive) (other-window -1)))
 
@@ -308,6 +315,7 @@ From: [[https://github.com/sachac/.emacs.d/blob/83d21e473368adb1f63e582a6595450f
             (use-package helm-swoop :bind ("H-w" . helm-swoop)))
     :bind (("C-c h" . helm-command-prefix)
            ("C-x b" . helm-mini)
+           ("M-o" . helm-mini)
            ("C-`" . helm-resume)
            ("M-x" . helm-M-x)
            ("C-x C-f" . helm-find-files)))
@@ -568,17 +576,16 @@ From: [[https://github.com/sachac/.emacs.d/blob/83d21e473368adb1f63e582a6595450f
 #+END_SRC
 ** Inf-clojure
 #+BEGIN_SRC emacs-lisp
-    (use-package inf-clojure
-      :ensure t
-      :config
+  (use-package inf-clojure
+    :ensure t
+    :config
+    ;; Enable inf-clojure for cljs
+    ;; (add-hook 'clojurescript-mode-hook #'inf-clojure-minor-mode)
+    )
 
-      ;; Enable inf-clojure for cljs
-      ;; (add-hook 'clojurescript-mode-hook #'inf-clojure-minor-mode)
-      )
-
-    (defun figwheel-repl ()
-      (interactive)
-      (run-clojure "lein figwheel"))
+  (defun figwheel-repl ()
+    (interactive)
+    (run-clojure "lein figwheel"))
 #+END_SRC
 * Code Management
 ** Magit
@@ -598,9 +605,11 @@ From: [[https://github.com/sachac/.emacs.d/blob/83d21e473368adb1f63e582a6595450f
     :commands projectile-mode
     :init
     (progn
+      (setq projectile-sort-order 'recentf)
       (setq projectile-enable-caching t)
       (setq projectile-completion-system 'helm)
-      (setq projectile-use-git-grep t))
+      (setq projectile-use-git-grep t)
+      (setq projectile-verbose nil))
     :config
     (progn
       (projectile-global-mode t)
@@ -608,7 +617,5 @@ From: [[https://github.com/sachac/.emacs.d/blob/83d21e473368adb1f63e582a6595450f
       (use-package ag
         :commands ag
         :ensure t))
-    :bind (("M-S-o" . projectile-find-file)
-           ("s-F" . projectile-grep)
-           ("M-o" . projectile-recentf)))
+    :bind (("s-F" . projectile-grep)))
 #+END_SRC
