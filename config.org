@@ -4,7 +4,7 @@
   (setq user-full-name "Jorge M Gomez Cardona"
         user-mail-address "jorgemario@gmail.com")
 #+END_SRC
-** Defaul
+** Defaults
 #+BEGIN_SRC emacs-lisp
   ;; These functions are useful. Activate them.
   (put 'downcase-region 'disabled nil)
@@ -85,6 +85,18 @@
 
   ;; Electric pair mode always on
   (electric-pair-mode 1)
+#+END_SRC
+** Mode line
+*** Uniquify
+#+BEGIN_SRC emacs-lisp
+  (use-package uniquify
+    :config
+    (setq uniquify-buffer-name-style 'forward)
+    (setq uniquify-separator "/")
+    ;; rename after killing uniquified
+    (setq uniquify-after-kill-buffer-p t)
+    ;; don't muck with special buffers
+    (setq uniquify-ignore-buffers-re "^\\*"))
 #+END_SRC
 ** OS
 #+BEGIN_SRC emacs-lisp
@@ -370,6 +382,7 @@ From: [[https://github.com/sachac/.emacs.d/blob/83d21e473368adb1f63e582a6595450f
     :bind (("C-." . goto-last-change)
            ("C-," . goto-last-change-reverse)))
 #+END_SRC
+** 
 * Code Edit
 ** Company mode
 #+BEGIN_SRC emacs-lisp
@@ -402,9 +415,9 @@ From: [[https://github.com/sachac/.emacs.d/blob/83d21e473368adb1f63e582a6595450f
     (add-hook 'scheme-mode-hook           #'enable-paredit-mode)
     ;; eldoc-mode shows documentation in the minibuffer when writing code
     ;; http://www.emacswiki.org/emacs/ElDoc
-    (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
-    (add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode)
-    (add-hook 'ielm-mode-hook 'turn-on-eldoc-mode)
+    (add-hook 'emacs-lisp-mode-hook #'turn-on-eldoc-mode)
+    (add-hook 'lisp-interaction-mode-hook #'turn-on-eldoc-mode)
+    (add-hook 'ielm-mode-hook #'turn-on-eldoc-mode)
     (global-set-key (kbd "M-[") #'paredit-wrap-square)
     (global-set-key (kbd "M-{") #'paredit-wrap-curly))
 #+END_SRC
@@ -413,11 +426,10 @@ From: [[https://github.com/sachac/.emacs.d/blob/83d21e473368adb1f63e582a6595450f
   (use-package clojure-mode
     :ensure t
     :config
-    ;; Enable paredit for Clojure
+
     (add-hook 'clojure-mode-hook #'enable-paredit-mode)
-
     (add-hook 'clojure-mode-hook #'rainbow-delimiters-mode)
-
+  
     ;; This is useful for working with camel-case tokens, like names of
     ;; Java classes (e.g. JavaClassName)
     (add-hook 'clojure-mode-hook #'subword-mode)
@@ -441,7 +453,6 @@ From: [[https://github.com/sachac/.emacs.d/blob/83d21e473368adb1f63e582a6595450f
     (add-to-list 'auto-mode-alist '("\\.cljs.*$" . clojurescript-mode))
     (add-to-list 'auto-mode-alist '("lein-env" . enh-ruby-mode)))
 
-
   ;; A little more syntax highlighting
   (use-package clojure-mode-extra-font-locking
     :ensure t)
@@ -456,8 +467,17 @@ From: [[https://github.com/sachac/.emacs.d/blob/83d21e473368adb1f63e582a6595450f
   (use-package cider
     :ensure t
     :config
+
+    (add-hook 'cider-mode-hook #'eldoc-mode)
+  
     ;; provides minibuffer documentation for the code you're typing into the repl
     (add-hook 'cider-repl-mode-hook #'eldoc-mode)
+
+    ;; enable paredit in your REPL
+    (add-hook 'cider-repl-mode-hook #'paredit-mode)
+
+    ;; rainbow
+    (add-hook 'cider-repl-mode-hook #'rainbow-delimiters-mode)
 
     ;; go right to the REPL buffer when it's finished connecting
     (setq cider-repl-pop-to-buffer-on-connect t)
@@ -475,8 +495,7 @@ From: [[https://github.com/sachac/.emacs.d/blob/83d21e473368adb1f63e582a6595450f
     ;; Wrap when navigating history.
     (setq cider-repl-wrap-history t)
 
-    ;; enable paredit in your REPL
-    (add-hook 'cider-repl-mode-hook #'paredit-mode)
+
 
     ;; Instruct CIDER to use Figwheel
     ;; https://cider.readthedocs.io/en/latest/up_and_running/#clojurescript-usage
@@ -588,14 +607,21 @@ From: [[https://github.com/sachac/.emacs.d/blob/83d21e473368adb1f63e582a6595450f
     (run-clojure "lein figwheel"))
 #+END_SRC
 * Code Management
-** Magit
+** Git
+*** Magit
 #+BEGIN_SRC emacs-lisp
   (use-package magit
     :ensure t
-    :bind ("C-x g" . magit-status)
-    ;; :config
-    ;; (define-key magit-status-mode-map (kbd "q") 'magit-mode-bury-buffer)
-    )
+    :bind ("C-x g" . magit-status))
+#+END_SRC
+*** Diff-hl
+#+BEGIN_SRC emacs-lisp
+  (use-package diff-hl
+    :ensure t
+    :config
+    (global-diff-hl-mode +1)
+    (add-hook 'dired-mode-hook #'diff-hl-dired-mode)
+    (add-hook 'magit-post-refresh-hook #'diff-hl-magit-post-refresh))
 #+END_SRC
 ** Projectile
 #+BEGIN_SRC emacs-lisp
