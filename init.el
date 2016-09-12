@@ -38,3 +38,8 @@
 
 ;;; Load the config
 (org-babel-load-file (concat user-emacs-directory "config.org"))
+
+;;; Parinfer
+(add-to-list 'load-path "~/.emacs.d/lisp/parinfer-mode")
+(require 'parinfer-mode)
+
