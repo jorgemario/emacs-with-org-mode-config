@@ -43,3 +43,17 @@
 (add-to-list 'load-path "~/.emacs.d/lisp/parinfer-mode")
 (require 'parinfer-mode)
 
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (geiser which-key web-mode use-package undo-tree super-save spacemacs-theme smex smartscan rainbow-delimiters persistent-soft org magit inf-clojure ido-vertical-mode helm-projectile helm-ag goto-chg exec-path-from-shell ergoemacs-mode ensime diff-hl cyberpunk-theme crux clojure-mode-extra-font-locking clj-refactor cider-eval-sexp-fu ag))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )

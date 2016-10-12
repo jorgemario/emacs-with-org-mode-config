@@ -21,6 +21,17 @@
   ;; Answering just 'y' or 'n' will do
   (defalias 'yes-or-no-p 'y-or-n-p)
 
+  ;; Some sane defaults
+  ;; https://sam217pa.github.io/2016/09/02/how-to-build-your-own-spacemacs/
+  (setq delete-old-versions -1)
+  (setq version-control t)
+  (setq vc-make-backup-files t)
+  (setq vc-follow-symlinks t)
+  (setq inhibit-startup-screen t)
+  (setq coding-system-for-read 'utf-8)
+  (setq coding-system-for-write 'utf-8)
+  (setq default-fill-column 80)
+
   ;; Keep all backup and auto-save files in one directory
   (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
   (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))
@@ -642,6 +653,13 @@ From: [[https://github.com/sachac/.emacs.d/blob/83d21e473368adb1f63e582a6595450f
   (defun figwheel-repl ()
     (interactive)
     (run-clojure "lein figwheel"))
+#+END_SRC
+** Racket
+#+BEGIN_SRC emacs-lisp
+  ;; Just make sure geiser is installed
+  ;; We'll be using it manually at first to learn basics
+  (use-package geiser
+    :ensure t)
 #+END_SRC
 * Code Management
 ** Git
