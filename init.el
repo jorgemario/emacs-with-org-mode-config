@@ -50,7 +50,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (geiser which-key web-mode use-package undo-tree super-save spacemacs-theme smex smartscan rainbow-delimiters persistent-soft org magit inf-clojure ido-vertical-mode helm-projectile helm-ag goto-chg exec-path-from-shell ergoemacs-mode ensime diff-hl cyberpunk-theme crux clojure-mode-extra-font-locking clj-refactor cider-eval-sexp-fu ag))))
+    (xah-fly-keys which-key web-mode use-package super-save spacemacs-theme smex smartscan rainbow-delimiters persistent-soft org magit lua-mode kaolin-theme inf-clojure ido-vertical-mode helm-projectile helm-ag goto-chg geiser exec-path-from-shell ergoemacs-mode ensime diff-hl cyberpunk-theme crux creamsody-theme clojure-mode-extra-font-locking clj-refactor cider-eval-sexp-fu ag))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

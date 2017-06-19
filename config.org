@@ -208,18 +208,26 @@
         (put 'suspend-frame 'disabled t)))
 #+END_SRC
 ** Theme
+*** Kaolin
+#+BEGIN_SRC emacs-lisp
+  (use-package kaolin-theme
+    :ensure t
+    :defer t
+    :pin melpa-stable
+    ;; :init
+    ;; (load-theme 'kaolin t)
+    )
+#+END_SRC
 *** Cyberpunk
 #+BEGIN_SRC emacs-lisp
   (use-package cyberpunk-theme
     :if (window-system)
     :ensure t
-    :init
-      ;; (progn
-      ;;   (load-theme 'cyberpunk t)
-      ;;   (set-face-attribute `mode-line nil
-      ;;                       :box nil)
-      ;;   (set-face-attribute `mode-line-inactive nil
-    ;;                       :box nil))
+    ;; :init
+    ;; (progn
+    ;;   (load-theme 'cyberpunk t)
+    ;;   (set-face-attribute `mode-line nil :box nil)
+    ;;   (set-face-attribute `mode-line-inactive nil :box nil))
     )
 #+END_SRC
 *** Spacemacs
@@ -231,7 +239,16 @@
     (progn
       (setq spacemacs-theme-comment-bg t)
       (setq spacemacs-theme-org-height t)
-      (load-theme 'spacemacs-dark t)))
+      (load-theme 'spacemacs-dark t)
+      )
+    )
+#+END_SRC
+*** Creamsody
+#+BEGIN_SRC emacs-lisp
+  (use-package creamsody-theme
+    :ensure t
+    :defer t
+    :pin melpa-stable)
 #+END_SRC
 ** Font
 *** Inconsolata
@@ -256,13 +273,13 @@
   (defun smarter-move-beginning-of-line (arg)
     "Move point back to indentation of beginning of line.
 
-  Move point to the first non-whitespace character on this line.
-  If point is already there, move to the beginning of the line.
-  Effectively toggle between the first non-whitespace character and
-  the beginning of the line.
+    Move point to the first non-whitespace character on this line.
+    If point is already there, move to the beginning of the line.
+    Effectively toggle between the first non-whitespace character and
+    the beginning of the line.
 
-  If ARG is not nil or 1, move forward ARG - 1 lines first.  If
-  point reaches the beginning or end of the buffer, stop there."
+    If ARG is not nil or 1, move forward ARG - 1 lines first.  If
+    point reaches the beginning or end of the buffer, stop there."
     (interactive "^p")
     (setq arg (or arg 1))
 
@@ -281,6 +298,11 @@
                   'smarter-move-beginning-of-line)
 
   (global-set-key (kbd "C-a") 'smarter-move-beginning-of-line)
+
+  ;; next and previous buffer
+  (global-set-key (kbd "s-[") 'previous-buffer)
+
+  (global-set-key (kbd "s-]") 'next-buffer)
 #+END_SRC
 *** Which-key
 #+BEGIN_SRC emacs-lisp
@@ -361,6 +383,7 @@ From: [[https://github.com/sachac/.emacs.d/blob/83d21e473368adb1f63e582a6595450f
   (use-package helm
     :ensure t
     :diminish helm-mode
+    :pin melpa-stable
     :init (progn
             (require 'helm-config)
             (use-package helm-projectile
@@ -469,7 +492,8 @@ From: [[https://github.com/sachac/.emacs.d/blob/83d21e473368adb1f63e582a6595450f
     (global-set-key (kbd "M-[") #'paredit-wrap-square)
     (global-set-key (kbd "M-{") #'paredit-wrap-curly))
 #+END_SRC
-** Clojure mode
+** Clojure
+mode
 #+BEGIN_SRC emacs-lisp
   (use-package clojure-mode
     :ensure t
@@ -637,6 +661,7 @@ From: [[https://github.com/sachac/.emacs.d/blob/83d21e473368adb1f63e582a6595450f
 #+BEGIN_SRC emacs-lisp
   (use-package ensime
     :ensure t
+    :pin melpa-stable
     :commands ensime ensime-mode
     :config
     (add-hook 'scala-mode-hook 'ensime-mode))
@@ -682,6 +707,7 @@ From: [[https://github.com/sachac/.emacs.d/blob/83d21e473368adb1f63e582a6595450f
 #+BEGIN_SRC emacs-lisp
   (use-package projectile
     :ensure t
+    :pin melpa-stable
     :diminish projectile-mode
     :commands projectile-mode
     :init
