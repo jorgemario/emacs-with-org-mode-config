@@ -210,31 +210,25 @@
         (put 'ns-print-buffer 'disabled t)
         (put 'suspend-frame 'disabled t)))
 #+END_SRC
-** Themes
-*** Kaolin
+** Font & theme
 #+BEGIN_SRC emacs-lisp
-  (use-package kaolin-theme
-    :ensure t
-    :defer t
-    :pin melpa-stable
-    ;; :init
-    ;; (load-theme 'kaolin t)
-    )
+  (progn 
+    (load-theme 'leuven t)
+    (add-to-list 'default-frame-alist '(font . "Hack-14")))
 #+END_SRC
-*** Cyberpunk
+*** Other themes
 #+BEGIN_SRC emacs-lisp
   (use-package cyberpunk-theme
     :if (window-system)
     :ensure t
+    :defer t
     ;; :init
     ;; (progn
     ;;   (load-theme 'cyberpunk t)
     ;;   (set-face-attribute `mode-line nil :box nil)
     ;;   (set-face-attribute `mode-line-inactive nil :box nil))
     )
-#+END_SRC
-*** Spacemacs
-#+BEGIN_SRC emacs-lisp
+
   (use-package spacemacs-theme
     :ensure t
     :defer t
@@ -245,53 +239,14 @@
       ;(load-theme 'spacemacs-dark t)
       )
     )
-#+END_SRC
-*** Creamsody
-#+BEGIN_SRC emacs-lisp
-  (use-package creamsody-theme
-    :ensure t
-    :defer t
-    :pin melpa-stable)
-#+END_SRC
-*** Material (google material colors)
-#+BEGIN_SRC emacs-lisp
-  (use-package material-theme
-    :ensure t
-    :defer t
-    :pin melpa-stable
-    :init
-    ;(load-theme 'material t)
-)
-#+END_SRC
-*** Zenburn
-#+BEGIN_SRC emacs-lisp
-    (use-package zenburn-theme
+
+  (use-package zenburn-theme
       :ensure t
       :defer t
       :pin melpa-stable
       :init
       ;(load-theme 'misterioso t)
   )
-#+END_SRC
-** Font
-#+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "M-=") 'text-scale-increase)
-  (global-set-key (kbd "M--") 'text-scale-decrease)
-#+END_SRC
-*** Inconsolata
-#+BEGIN_SRC emacs-lisp
-  ;; (add-to-list 'default-frame-alist
-  ;;              '(font . "Inconsolata-14"))
-#+END_SRC
-*** Mononoki
-#+BEGIN_SRC emacs-lisp
-  ;; (add-to-list 'default-frame-alist
-  ;;              '(font . "mononoki-14"))
-#+END_SRC
-*** Hack
-#+BEGIN_SRC emacs-lisp
-  (add-to-list 'default-frame-alist
-               '(font . "Hack-14"))
 #+END_SRC
 ** Navigation
 #+BEGIN_SRC emacs-lisp
