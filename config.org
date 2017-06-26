@@ -72,6 +72,9 @@
   ;; -i gets alias definitions from .bash_profile
   (setq shell-command-switch "-ic")
 
+  ;; F1 invokes inferior shell
+  (global-set-key (kbd "<f1>") 'shell)
+
   ;; Don't beep at me
   (setq visible-bell nil)
   (setq ring-bell-function (lambda ()
@@ -207,7 +210,7 @@
         (put 'ns-print-buffer 'disabled t)
         (put 'suspend-frame 'disabled t)))
 #+END_SRC
-** Theme
+** Themes
 *** Kaolin
 #+BEGIN_SRC emacs-lisp
   (use-package kaolin-theme
@@ -239,7 +242,7 @@
     (progn
       (setq spacemacs-theme-comment-bg t)
       (setq spacemacs-theme-org-height t)
-      (load-theme 'spacemacs-dark t)
+      ;(load-theme 'spacemacs-dark t)
       )
     )
 #+END_SRC
@@ -249,6 +252,26 @@
     :ensure t
     :defer t
     :pin melpa-stable)
+#+END_SRC
+*** Material (google material colors)
+#+BEGIN_SRC emacs-lisp
+  (use-package material-theme
+    :ensure t
+    :defer t
+    :pin melpa-stable
+    :init
+    ;(load-theme 'material t)
+)
+#+END_SRC
+*** Zenburn
+#+BEGIN_SRC emacs-lisp
+    (use-package zenburn-theme
+      :ensure t
+      :defer t
+      :pin melpa-stable
+      :init
+      ;(load-theme 'misterioso t)
+  )
 #+END_SRC
 ** Font
 #+BEGIN_SRC emacs-lisp
@@ -307,6 +330,9 @@
   (global-set-key (kbd "s-[") 'previous-buffer)
 
   (global-set-key (kbd "s-]") 'next-buffer)
+
+  ;; C-n insert new lines if the point is at the end o
+  (setq next-line-add-newlines t)
 #+END_SRC
 *** Which-key
 #+BEGIN_SRC emacs-lisp
@@ -538,7 +564,16 @@ mode
 ** Clojure refactor
 #+BEGIN_SRC emacs-lisp
   (use-package clj-refactor
-    :ensure t)
+    :ensure t
+    :bind ("<s-return>" . cljr-add-missing-libspec)
+    :config
+    (add-hook 'clojure-mode-hook
+              (lambda ()
+                (clj-refactor-mode 1)
+                (yas-minor-mode 1) ; for adding require/use/import statements
+                ;; This choice of keybinding leaves cider-macroexpand-1 unbound
+                (cljr-add-keybindings-with-prefix "C-c r"))))
+
 #+END_SRC
 ** Cider
 #+BEGIN_SRC emacs-lisp
@@ -572,8 +607,6 @@ mode
 
     ;; Wrap when navigating history.
     (setq cider-repl-wrap-history t)
-
-
 
     ;; Instruct CIDER to use Figwheel
     ;; https://cider.readthedocs.io/en/latest/up_and_running/#clojurescript-usage
@@ -710,6 +743,7 @@ mode
     (add-hook 'magit-post-refresh-hook #'diff-hl-magit-post-refresh))
 #+END_SRC
 ** Projectile
+
 #+BEGIN_SRC emacs-lisp
   (use-package projectile
     :ensure t
@@ -730,5 +764,7 @@ mode
       (use-package ag
         :commands ag
         :ensure t))
-    :bind (("s-F" . projectile-grep)))
+    :bind (("s-F" . projectile-grep)
+           ("s-p" . projectile-command-map)))
 #+END_SRC
+
