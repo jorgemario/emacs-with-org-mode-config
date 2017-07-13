@@ -99,6 +99,23 @@
 
   ;; Electric pair mode always on
   (electric-pair-mode 1)
+
+  ;; deletes all the whitespace when you hit backspace or delete
+  (use-package hungry-delete
+    :ensure t
+    :config
+    (global-hungry-delete-mode))
+
+  ;; expand the marked region in semantic increments (negative prefix to reduce region)
+  (use-package expand-region
+    :ensure t
+    :config 
+    (global-set-key (kbd "C-=") 'er/expand-region))
+
+  ;; mark and edit all copies of the marked region simultaniously. 
+  (use-package iedit
+    :ensure t)
+
 #+END_SRC
 ** Mode line
 *** Uniquify
@@ -166,9 +183,6 @@
         ;; Use Command-` to switch between Emacs windows (not frames)
         (bind-key "s-`" 'other-window)
 
-        ;; Use Command-Shift-` to switch Emacs frames in reverse
-        (bind-key "s-~" (lambda() () (interactive) (other-window -1)))
-
         ;; Because of the keybindings above, set one for `other-frame'
         (bind-key "s-1" 'other-frame)
 
@@ -176,18 +190,9 @@
         (setq ns-use-native-fullscreen nil) ; Not Lion style
         (bind-key "<s-return>" 'toggle-frame-fullscreen)
 
-        ;; buffer switching
-        (bind-key "s-{" 'previous-buffer)
-        (bind-key "s-}" 'next-buffer)
-
-        ;; Compiling
-        (bind-key "H-c" 'compile)
-        (bind-key "H-r" 'recompile)
-        (bind-key "H-s" (defun save-and-recompile () (interactive) (save-buffer) (recompile)))
-
         ;; disable the key that minimizes emacs to the dock because I don't
         ;; minimize my windows
-        ;; (global-unset-key (kbd "C-z"))
+        (global-unset-key (kbd "C-z"))
 
         (defun open-dir-in-finder ()
           "Open a new Finder window to the path of the current buffer"
@@ -210,44 +215,26 @@
         (put 'ns-print-buffer 'disabled t)
         (put 'suspend-frame 'disabled t)))
 #+END_SRC
+
 ** Font & theme
 #+BEGIN_SRC emacs-lisp
-  (progn 
-    (load-theme 'leuven t)
-    (add-to-list 'default-frame-alist '(font . "Hack-14")))
-#+END_SRC
-*** Other themes
-#+BEGIN_SRC emacs-lisp
-  (use-package cyberpunk-theme
-    :if (window-system)
-    :ensure t
-    :defer t
-    ;; :init
-    ;; (progn
-    ;;   (load-theme 'cyberpunk t)
-    ;;   (set-face-attribute `mode-line nil :box nil)
-    ;;   (set-face-attribute `mode-line-inactive nil :box nil))
-    )
-
-  (use-package spacemacs-theme
-    :ensure t
-    :defer t
-    :init
-    (progn
-      (setq spacemacs-theme-comment-bg t)
-      (setq spacemacs-theme-org-height t)
-      ;(load-theme 'spacemacs-dark t)
-      )
-    )
-
-  (use-package zenburn-theme
+    (use-package spacemacs-theme
       :ensure t
       :defer t
-      :pin melpa-stable
       :init
-      ;(load-theme 'misterioso t)
-  )
+      (progn
+        (setq spacemacs-theme-comment-bg t)
+        (setq spacemacs-theme-org-height t)))
+
+    (use-package zenburn-theme
+        :ensure t
+        :defer t)
+
+  (progn 
+    (load-theme 'spacemacs-dark t)
+    (add-to-list 'default-frame-alist '(font . "Hack-14")))
 #+END_SRC
+
 ** Navigation
 #+BEGIN_SRC emacs-lisp
   ;; from http://emacsredux.com/blog/2013/05/22/smarter-navigation-to-the-beginning-of-a-line/
@@ -289,6 +276,7 @@
   ;; C-n insert new lines if the point is at the end o
   (setq next-line-add-newlines t)
 #+END_SRC
+
 *** Which-key
 #+BEGIN_SRC emacs-lisp
   (use-package which-key
@@ -297,6 +285,7 @@
     (require 'which-key)
     (which-key-mode))
 #+END_SRC
+
 *** Recentf
 #+BEGIN_SRC emacs-lisp
   (use-package recentf
@@ -306,17 +295,20 @@
       (recentf-mode t)
       (setq recentf-max-saved-items 200)))
 #+END_SRC
+
 *** List buffers
 #+BEGIN_SRC emacs-lisp
   ;; make ibuffer the default buffer lister.
   (defalias 'list-buffers 'ibuffer)
 #+END_SRC
+
 *** Smartscan
 #+BEGIN_SRC emacs-lisp
   (use-package smartscan
     :config
     (add-hook 'prog-mode-hook '(lambda () (smartscan-mode 1))))
 #+END_SRC
+
 ** Window
 #+BEGIN_SRC emacs-lisp
   ;; Convenient keybindings to resize windows.
@@ -342,8 +334,8 @@
 
   (bind-key "C-x 2" 'vsplit-other-window)
   (bind-key "C-x 3" 'hsplit-other-window)
-  (bind-key "s-<down>" 'other-window)
-  (bind-key "s-<up>" 'other-window)
+  ;(bind-key "s-<down>" 'other-window)
+  ;(bind-key "s-<up>" 'other-window)
 
   ;; Enabling winner-mode to restore windows
   (winner-mode 1)
@@ -509,7 +501,7 @@ mode
     ;; Use clojure mode for other extensions
     (add-to-list 'auto-mode-alist '("\\.edn$" . clojure-mode))
     (add-to-list 'auto-mode-alist '("\\.boot$" . clojure-mode))
-    (add-to-list 'auto-mode-alist '("\\.cljs.*$" . clojurescript-mode))
+    ;(add-to-list 'auto-mode-alist '("\\.cljs.*$" . clojurescript-mode))
     (add-to-list 'auto-mode-alist '("lein-env" . enh-ruby-mode)))
 
   ;; A little more syntax highlighting
@@ -537,7 +529,7 @@ mode
     :config
 
     (add-hook 'cider-mode-hook #'eldoc-mode)
-  
+
     ;; provides minibuffer documentation for the code you're typing into the repl
     (add-hook 'cider-repl-mode-hook #'eldoc-mode)
 
@@ -552,6 +544,9 @@ mode
 
     ;; disable cider message
     (setq cider-repl-display-help-banner nil)
+
+    ;; disable prompt for symbol
+    (setq cider-prompt-for-symbol nil)
 
     ;; When there's a cider error, show its buffer and switch to it
     (setq cider-show-error-buffer t)
@@ -698,7 +693,6 @@ mode
     (add-hook 'magit-post-refresh-hook #'diff-hl-magit-post-refresh))
 #+END_SRC
 ** Projectile
-
 #+BEGIN_SRC emacs-lisp
   (use-package projectile
     :ensure t
