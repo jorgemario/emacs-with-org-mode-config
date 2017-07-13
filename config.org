@@ -100,11 +100,7 @@
   ;; Electric pair mode always on
   (electric-pair-mode 1)
 
-  ;; deletes all the whitespace when you hit backspace or delete
-  (use-package hungry-delete
-    :ensure t
-    :config
-    (global-hungry-delete-mode))
+  (setq backward-delete-char-untabify-method 'hungry)
 
   ;; expand the marked region in semantic increments (negative prefix to reduce region)
   (use-package expand-region
@@ -224,23 +220,27 @@
         (put 'suspend-frame 'disabled t)))
 #+END_SRC
 
-** Font & theme
+** UI
 #+BEGIN_SRC emacs-lisp
-    (use-package spacemacs-theme
-      :ensure t
-      :defer t
-      :init
-      (progn
-        (setq spacemacs-theme-comment-bg t)
-        (setq spacemacs-theme-org-height t)))
+  (use-package spacemacs-theme
+    :ensure t
+    :init
+    (progn
+      (setq spacemacs-theme-comment-bg t)
+      (setq spacemacs-theme-org-height t)))
 
-    (use-package zenburn-theme
-        :ensure t
-        :defer t)
+  (use-package zenburn-theme
+    :ensure t
+    :defer t)
 
   (progn 
     (load-theme 'spacemacs-dark t)
     (add-to-list 'default-frame-alist '(font . "Hack-14")))
+
+  (use-package powerline
+    :ensure t
+    :config
+    (powerline-default-theme))
 #+END_SRC
 
 ** Navigation
