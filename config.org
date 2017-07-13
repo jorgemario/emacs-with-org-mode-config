@@ -281,6 +281,7 @@
 #+BEGIN_SRC emacs-lisp
   (use-package which-key
     :ensure t
+    :diminish which-key-mode
     :init
     (require 'which-key)
     (which-key-mode))
@@ -393,11 +394,11 @@ From: [[https://github.com/sachac/.emacs.d/blob/83d21e473368adb1f63e582a6595450f
 #+BEGIN_SRC emacs-lisp
   (use-package super-save
     :ensure t
+    :diminish super-save-mode
     :config
     (progn
       (super-save-mode +1)
-      (setq auto-save-default nil)
-      ))
+      (setq auto-save-default nil)))
 #+END_SRC
 ** Org
 #+BEGIN_SRC emacs-lisp
@@ -438,9 +439,10 @@ From: [[https://github.com/sachac/.emacs.d/blob/83d21e473368adb1f63e582a6595450f
 #+BEGIN_SRC emacs-lisp
   (use-package company
     :ensure t
+    :diminish company-mode
     :config
     (global-company-mode)
-  
+
     ; use M-TAB, a.k.a. C-M-i, as manual trigger
     (global-set-key (kbd "s-<tab>") #'company-complete))
 #+END_SRC
@@ -527,47 +529,55 @@ mode
   (use-package cider
     :ensure t
     :config
+    (progn
 
-    (add-hook 'cider-mode-hook #'eldoc-mode)
+      (add-hook 'cider-mode-hook #'eldoc-mode)
 
-    ;; provides minibuffer documentation for the code you're typing into the repl
-    (add-hook 'cider-repl-mode-hook #'eldoc-mode)
+      ;; provides minibuffer documentation for the code you're typing into the repl
+      (add-hook 'cider-repl-mode-hook #'eldoc-mode)
 
-    ;; enable paredit in your REPL
-    (add-hook 'cider-repl-mode-hook #'paredit-mode)
+      ;; enable paredit in your REPL
+      (add-hook 'cider-repl-mode-hook #'paredit-mode)
 
-    ;; rainbow
-    (add-hook 'cider-repl-mode-hook #'rainbow-delimiters-mode)
+      ;; rainbow
+      (add-hook 'cider-repl-mode-hook #'rainbow-delimiters-mode)
 
-    ;; go right to the REPL buffer when it's finished connecting
-    (setq cider-repl-pop-to-buffer-on-connect t)
+      ;; go right to the REPL buffer when it's finished connecting
+      (setq cider-repl-pop-to-buffer-on-connect t)
 
-    ;; disable cider message
-    (setq cider-repl-display-help-banner nil)
+      ;; disable cider message
+      (setq cider-repl-display-help-banner nil)
 
-    ;; disable prompt for symbol
-    (setq cider-prompt-for-symbol nil)
+      ;; disable prompt for symbol
+      (setq cider-prompt-for-symbol nil)
 
-    ;; When there's a cider error, show its buffer and switch to it
-    (setq cider-show-error-buffer t)
-    (setq cider-auto-select-error-buffer t)
+      ;; When there's a cider error, show its buffer and switch to it
+      (setq cider-show-error-buffer t)
+      (setq cider-auto-select-error-buffer t)
 
-    ;; Where to store the cider history.
-    (setq cider-repl-history-file "~/.emacs.d/cider-history")
+      ;; Where to store the cider history.
+      (setq cider-repl-history-file "~/.emacs.d/cider-history")
 
-    ;; Wrap when navigating history.
-    (setq cider-repl-wrap-history t)
+      ;; Wrap when navigating history.
+      (setq cider-repl-wrap-history t)
 
-    ;; Instruct CIDER to use Figwheel
-    ;; https://cider.readthedocs.io/en/latest/up_and_running/#clojurescript-usage
-    (setq cider-cljs-lein-repl "(do (use 'figwheel-sidecar.repl-api) (start-figwheel!) (cljs-repl))")
+      ;; Instruct CIDER to use Figwheel
+      ;; https://cider.readthedocs.io/en/latest/up_and_running/#clojurescript-usage
+      (setq cider-cljs-lein-repl "(do (use 'figwheel-sidecar.repl-api) (start-figwheel!) (cljs-repl))")
 
-    (eval-after-load 'cider
-    '(progn
-       ;;(define-key clojure-mode-map (kbd "C-c C-v") 'cider-start-http-server)
-       ;;(define-key clojure-mode-map (kbd "C-M-r") 'cider-refresh)
-       (define-key clojure-mode-map (kbd "C-c u") 'cider-user-ns)
-       (define-key cider-mode-map (kbd "C-c u") 'cider-user-ns))))
+      ;; Simple function that saves buffer before loading it in the cider repl.
+      (defun my-load-buffer ()
+        (interactive)
+        (save-buffer)
+        (cider-load-buffer))
+    
+      (eval-after-load 'cider
+        '(progn
+           ;;(define-key clojure-mode-map (kbd "C-c C-v") 'cider-start-http-server)
+           ;;(define-key clojure-mode-map (kbd "C-M-r") 'cider-refresh)
+           (define-key clojure-mode-map (kbd "C-c u") 'cider-user-ns)
+           (define-key cider-mode-map (kbd "C-c u") 'cider-user-ns)
+           (define-key cider-mode-map (kbd "C-c C-k") #'my-load-buffer)))))
 #+END_SRC
 ** Web mode
 #+BEGIN_SRC emacs-lisp
