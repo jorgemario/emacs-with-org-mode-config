@@ -116,6 +116,14 @@
   (use-package iedit
     :ensure t)
 
+  ;; kill region do nothing if no region
+  (defun my-kill-region ()
+    (interactive)
+    (if (region-active-p)
+        (call-interactively #'kill-region)))
+
+  (global-set-key (kbd "C-w") #'my-kill-region)
+
 #+END_SRC
 ** Mode line
 *** Uniquify
@@ -456,22 +464,32 @@ From: [[https://github.com/sachac/.emacs.d/blob/83d21e473368adb1f63e582a6595450f
   (use-package paredit
     :ensure t
     :config
-    ;; Automatically load paredit when editing a lisp file
-    ;; More at http://www.emacswiki.org/emacs/ParEdit
-    (autoload 'enable-paredit-mode "paredit" "Turn on pseudo-structural editing of Lisp code." t)
-    (add-hook 'emacs-lisp-mode-hook       #'enable-paredit-mode)
-    (add-hook 'eval-expression-minibuffer-setup-hook #'enable-paredit-mode)
-    (add-hook 'ielm-mode-hook             #'enable-paredit-mode)
-    (add-hook 'lisp-mode-hook             #'enable-paredit-mode)
-    (add-hook 'lisp-interaction-mode-hook #'enable-paredit-mode)
-    (add-hook 'scheme-mode-hook           #'enable-paredit-mode)
-    ;; eldoc-mode shows documentation in the minibuffer when writing code
-    ;; http://www.emacswiki.org/emacs/ElDoc
-    (add-hook 'emacs-lisp-mode-hook #'turn-on-eldoc-mode)
-    (add-hook 'lisp-interaction-mode-hook #'turn-on-eldoc-mode)
-    (add-hook 'ielm-mode-hook #'turn-on-eldoc-mode)
-    (global-set-key (kbd "M-[") #'paredit-wrap-square)
-    (global-set-key (kbd "M-{") #'paredit-wrap-curly))
+    (progn
+      ;; Automatically load paredit when editing a lisp file
+      ;; More at http://www.emacswiki.org/emacs/ParEdit
+      (autoload 'enable-paredit-mode "paredit" "Turn on pseudo-structural editing of Lisp code." t)
+      (add-hook 'emacs-lisp-mode-hook       #'enable-paredit-mode)
+      (add-hook 'eval-expression-minibuffer-setup-hook #'enable-paredit-mode)
+      (add-hook 'ielm-mode-hook             #'enable-paredit-mode)
+      (add-hook 'lisp-mode-hook             #'enable-paredit-mode)
+      (add-hook 'lisp-interaction-mode-hook #'enable-paredit-mode)
+      (add-hook 'scheme-mode-hook           #'enable-paredit-mode)
+      ;; eldoc-mode shows documentation in the minibuffer when writing code
+      ;; http://www.emacswiki.org/emacs/ElDoc
+      (add-hook 'emacs-lisp-mode-hook #'turn-on-eldoc-mode)
+      (add-hook 'lisp-interaction-mode-hook #'turn-on-eldoc-mode)
+      (add-hook 'ielm-mode-hook #'turn-on-eldoc-mode)
+
+      (defun my-paredit-kill-region ()
+        (interactive)
+        (if (region-active-p)
+            (kill-region (region-beginning) (region-end))
+          (paredit-backward-kill-word)))
+
+      (bind-keys :map paredit-mode-map
+                 ("M-[" . paredit-wrap-square)
+                 ("M-{" . paredit-wrap-curly)
+                 ("C-w" . my-paredit-kill-region))))
 #+END_SRC
 ** Clojure
 mode
@@ -611,7 +629,8 @@ mode
 #+BEGIN_SRC emacs-lisp
   (use-package scala-mode
     :ensure t
-
+    :commands scala-mode
+    :defer t
     :interpreter ("scala" . scala-mode)
 
     ;; taken from:
