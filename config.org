@@ -233,14 +233,22 @@
     :ensure t
     :defer t)
 
-  (progn 
-    (load-theme 'spacemacs-dark t)
-    (add-to-list 'default-frame-alist '(font . "Hack-14")))
+  (use-package gruvbox-theme
+    :ensure t)
 
+  ;; enable powerline (status line)
   (use-package powerline
     :ensure t
     :config
     (powerline-default-theme))
+
+  ;; trust all themes
+  (setq custom-safe-themes t)
+
+  ;; set current theme and font
+  (progn 
+    (load-theme 'gruvbox t)
+    (set-frame-font "Hack 15" nil t))
 #+END_SRC
 
 ** Navigation
@@ -489,7 +497,11 @@ From: [[https://github.com/sachac/.emacs.d/blob/83d21e473368adb1f63e582a6595450f
       (bind-keys :map paredit-mode-map
                  ("M-[" . paredit-wrap-square)
                  ("M-{" . paredit-wrap-curly)
-                 ("C-w" . my-paredit-kill-region))))
+                 ("C-w" . my-paredit-kill-region)
+                 ("M-k" . paredit-raise-sexp)
+                 ("C-9" . paredit-backward-slurp-sexp)
+                 ("C-0" . paredit-forward-slurp-sexp))))
+
 #+END_SRC
 ** Clojure
 mode

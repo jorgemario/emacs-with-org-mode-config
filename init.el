@@ -50,7 +50,7 @@
  '(magit-dispatch-arguments nil)
  '(package-selected-packages
    (quote
-    (powerline expand-region iedit hungry-delete hungry-delete-mode xah-fly-keys monokai-theme solarized-theme zenburn-theme ace-jump-mode discover which-key web-mode use-package super-save spacemacs-theme smex smartscan rainbow-delimiters persistent-soft org magit inf-clojure ido-vertical-mode helm-projectile helm-ag goto-chg geiser exec-path-from-shell ensime diff-hl crux clojure-mode-extra-font-locking clj-refactor cider-eval-sexp-fu ag))))
+    (gruvbox-theme powerline expand-region iedit hungry-delete-mode solarized-theme zenburn-theme ace-jump-mode discover which-key web-mode use-package super-save spacemacs-theme smex smartscan rainbow-delimiters persistent-soft org magit inf-clojure ido-vertical-mode helm-projectile helm-ag goto-chg geiser exec-path-from-shell ensime diff-hl crux clojure-mode-extra-font-locking clj-refactor cider-eval-sexp-fu ag))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
